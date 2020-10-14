@@ -1,4 +1,4 @@
-num = int(input("Введите число: "))
+num = 123321
 sum_1 = 0
 sum_2 = 0
 for x in range(3):
