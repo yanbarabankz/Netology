@@ -3,26 +3,26 @@
 #Вам необходимо написать программу, которая выведет на экран распределение количества слов в запросах в требуемом виде.
 
 queries = [
-'смотреть сериалы онлайн',
-'новости спорта',
-'афиша кино',
-'курс доллара',
-'сериалы этим летом',
-'курс по питону',
-'сериалы про спорт',
+    'смотреть сериалы онлайн',
+    'новости спорта',
+    'афиша кино',
+    'курс доллара',
+    'сериалы этим летом',
+    'курс по питону',
+    'сериалы про спорт',
 ]
 
-two_words = 0
-three_words = 0
+data = {}
 
-for x in range(len(queries)):
-    if len(queries[x].split(' ')) == 2:
-        two_words += 1
+for x in queries:
+    words = x.split()
+    if len(words) in data.keys():
+        data[len(words)] += 1
     else:
-        three_words += 1
-
-two_words_percent = round((two_words*100)/(two_words+three_words), 2)
-three_words_percent = round((three_words*100)/(two_words+three_words), 2)
-
-print('Поисковых запросов, содержащих 2 слов(а): ', two_words_percent, '%')
-print('Поисковых запросов, содержащих 3 слов(а): ', three_words_percent, '%')
+        data.update({
+            len(words): 1
+        })
+        
+for key, value in data.items():
+    percentage = round((value / len(queries)) * 100, 2)
+    print(f'Поисковых запросов из {key} слова: {percentage}%')
