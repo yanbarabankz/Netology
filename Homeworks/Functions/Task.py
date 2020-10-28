@@ -31,12 +31,18 @@ def shelf(numbers):
     else:
         print('Документ не найден в базе.')
 
+
+def get_shelf(num):
+    return ','.join([k for k,v in directories.items() if num in v])
+
 def people_list():
     for persons in documents:
-        print('№:' +  persons['number'] + ', тип:' + persons['type'] + ', владелец:' + persons['name'])
+        print('Полка:' + get_shelf(persons['number']) + ', №:' +  persons['number'] + ', тип:' + persons['type'] + ', владелец:' + persons['name'])
+        
 
-def add(number):
-    directories[number] = 10
+def add_new_shelf(data, number_new_shelf):
+    data.setdefault(number_new_shelf,[])
+    directories=data
     print('Полка добавлена. Текущий перечень полок:', *directories.keys(), sep=",")
 
 def delete(number):
@@ -47,31 +53,37 @@ def delete(number):
         print('Полка удалена. Текущий перечень полок:', *directories.keys(), sep=", ")
     else:
         print('Такой полки не существует. Текущий перечень полок:', *directories.keys(), sep=", ")
+def user():
+    while True:
+        command = input('\n \
+      Введите одну из команд: p, l, s, ds, as. \n \
+      Для выхода наберите exit. \n \
+      Для вызов справки наберите help. \n \
+      Ваша команда: ')
+        if command == 'p':
+            people(input('\nВведите номер документа:'))
+        elif command == 's':
+            shelf(input('\nВведите номер документа:'))
+        elif command == 'l':
+            people_list()
+        elif command=='as':
+            number_new_shelf = input('Введите номер новой полки: ')
+            if len(directories.keys()) >= int(number_new_shelf):
+                print('Такая полка уже есть')
+            else:
+                add_new_shelf(directories, number_new_shelf)
+        elif command == 'ds':
+            delete(input('Введите номер полки:'))
+        elif command == 'exit':
+            break
+        elif command == 'help':
+            print('\n \
+        p – people – команда, которая спросит номер документа и выведет имя человека, которому он принадлежит;\n \
+        l – list – команда, которая выведет список всех документов в формате passport "2207 876234" "Василий Гупкин";\n \
+        s – shelf – команда, которая спросит номер документа и выведет номер полки, на которой он находится;\n \
+        as – add – команда, которая добавит новую полку')
+        else:
+            print('Вы ввели некорректную команду, повторите ввод.')
 
-while True:
-    command = input('\n \
-  Введите одну из команд: p, l, s, ds, as. \n \
-  Для выхода наберите exit. \n \
-  Для вызов справки наберите help. \n \
-  Ваша команда: ')
-    if command == 'p':
-        people(input('\nВведите номер документа:'))
-    elif command == 's':
-        shelf(input('\nВведите номер документа:'))
-    elif command == 'l':
-        people_list()
-    elif command == 'as':
-        add(input('Введите номер полки:'))
-    elif command == 'ds':
-        delete(input('Введите номер полки:'))
-    elif command == 'exit':
-        break
-    elif command == 'help':
-        print('\n \
-    p – people – команда, которая спросит номер документа и выведет имя человека, которому он принадлежит;\n \
-    l – list – команда, которая выведет список всех документов в формате passport "2207 876234" "Василий Гупкин";\n \
-    s – shelf – команда, которая спросит номер документа и выведет номер полки, на которой он находится;\n \
-    as – add – команда, которая добавит новую полку')
-    else:
-        print('Вы ввели некорректную команду, повторите ввод.')
+user()
 
